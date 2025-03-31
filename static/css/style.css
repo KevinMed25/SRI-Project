@@ -1,0 +1,27 @@
+@import url('./sanitize.css');
+
+:root {
+    --titleFont: 'PT Sans', sans-serif;
+    --paragraphFont: 'Open Sans', sans-serif;
+
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; /* 1rem = 10px */
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: var(--paragraphFont);
+    font-size: 1.6rem;
+    line-height: 2;
+    height: 100vh;
+    color: var(--white);
+    background-color: var(--primary);
+    display: flex;
+    flex-direction: column;
+}
