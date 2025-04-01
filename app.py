@@ -46,5 +46,26 @@ def save_ratings():
     pf.add_user_ratings_from_json(json_rating)
     return make_response({"message": "Valoraciones guardadas correctamente"},201)
 
+@app.route('/api/recommendations', methods=['GET'])
+def get_recommendations():
+    recomendations = [
+        {
+            "user": "Ana",
+            "peliculas": [
+                {
+                    "titulo": "Inception", 
+                    "descripcion": "Un ladrón que roba secretos", 
+                    "categoria": "Ciencia ficción"
+                },
+                {
+                    "titulo": "Interstellar", 
+                    "descripcion": "Un grupo de astronautas viaja a través de un agujero de gusano", 
+                    "categoria": "Ciencia ficción"
+                }
+            ]
+        }
+    ]
+    return jsonify({"recommendations": recomendations})
+
 if __name__ == "__main__":
     app.run(debug=True)
