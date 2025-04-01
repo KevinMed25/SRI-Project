@@ -2,14 +2,18 @@ import os
 import csv
 import json
 
-MOVIES_FILE = "data\\movies.csv"
-RATINGS_FILE = "data\\ratings.csv"
+# Obtener la ruta base del proyecto
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+MOVIES_FILE = os.path.join(DATA_DIR, "movies.csv")
+RATINGS_FILE = os.path.join(DATA_DIR, "ratings.csv")
+
+# Crear la carpeta "data" si no existe
+os.makedirs(DATA_DIR, exist_ok=True)
 
 def ensure_files_exist():
     """ Validar que las rutas y los archivos csv existen """
-    os.makedirs("data", exist_ok=True)
-
-    # Crear movies.csv (si no existe) y agregar encabezado
+    # Crear movies.csv (si no existe)
     if not os.path.exists(MOVIES_FILE):
         with open(MOVIES_FILE, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
@@ -21,7 +25,8 @@ def ensure_files_exist():
         with open(RATINGS_FILE, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(["user_name"])  # Solo escribe la cabecera 'user_name'
-        print(f"Created {RATINGS_FILE}")
+        print(f"Created {RATINGS_FILE}") # Llamar la función al inicio para crear archivos si faltan
+
 
 def load_movies():
     """ Leer las películas desde el archivo csv y devolver una lista de diccionarios """
@@ -41,7 +46,7 @@ def load_ratings():
 
 def add_user_ratings_from_json(user_json):
     """ Agregar valoraciones desde un JSON """
-    user_data = json.loads(user_json)
+    user_data = user_json
     user_name = user_data["user"]
     movie_ratings = user_data["ratings"]
 

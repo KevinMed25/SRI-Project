@@ -1,14 +1,17 @@
 // Cargar usuarios al iniciar
 async function loadUsers() {
     try {
-        const response = await fetch('http://localhost:3000/users');
+        const response = await fetch('http://127.0.0.1:5000/api/users');
         if (!response.ok) throw new Error('Error cargando usuarios');
         
-        const users = await response.json();
+        const data = await response.json(); // Obtener el objeto completo
+        const users = data.users; // Acceder al array "users"
+
         const select = document.getElementById('userName');
         
+        // Generar opciones para el select
         select.innerHTML = users.map(user => 
-            `<option value="${user.nombre}">${user.nombre}</option>`
+            `<option value="${user.name}">${user.name}</option>`
         ).join('');
     } catch (error) {
         console.error('Error:', error);
@@ -79,7 +82,6 @@ document.querySelectorAll('.movie-card').forEach(card => {
         document.getElementById('selectedMovieImage').src = imagen;
         document.getElementById('votingForm').style.display = 'block';
 
-        // Desplazar la página al formulario
         document.getElementById('votingForm').scrollIntoView({ behavior: 'smooth' });
     });
 });
