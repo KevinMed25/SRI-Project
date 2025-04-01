@@ -7,7 +7,7 @@ async function loadUsers() {
         const data = await response.json(); // Obtener el objeto completo
         const users = data.users; // Acceder al array "users"
 
-        const select = document.getElementById('userSelect');
+        const select = document.getElementById('userName');
         
         // Generar opciones para el select
         select.innerHTML = users.map(user => 

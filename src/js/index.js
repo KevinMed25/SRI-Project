@@ -5,8 +5,8 @@ async function loadUsers() {
         const response = await fetch('http://127.0.0.1:5000/api/users');
         if (!response.ok) throw new Error('Error cargando usuarios');
         
-        const data = await response.json(); // Obtener el objeto completo
-        const users = data.users; // Acceder al array "users"
+        const data = await response.json();
+        const users = data.users;
 
         const select = document.getElementById('userSelect');
         
