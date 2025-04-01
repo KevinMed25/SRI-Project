@@ -101,5 +101,5 @@ def format_recommendations(recommended, df_movies, username):
 
 #! Example usage
 if __name__ == "__main__":
-    recommended = recommend_movies("Pablo", limit=1)
+    recommended = recommend_movies("Pablo", limit=5)
     print(recommended)

@@ -10,6 +10,10 @@ CORS(app, origins=["http://127.0.0.1:5500"])
 def index():
     return render_template("index.html")
 
+@app.route("/rate")
+def rate():
+    return render_template("rate.html")
+
 
 @app.route("/api/users", methods=['GET'])
 def get_users(): 
