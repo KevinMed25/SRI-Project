@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Recommender</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/src/css/style.css" />
 </head>
+
 <body>
-    <h1>Movie Recommender</h1>
+    <div class="container">
+        <h1 class="title">¡Nuestras Recomendaciones!</h1>
+        <div>
+            <label for="userSelect">Seleccionar Usuario:</label>
+            <select id="userSelect" style="width: 300px; padding: 8px">
+                <option value="">-- Cargando usuarios --</option>
+            </select>
+        </div>
+
+        <div id="recommendationsContainer">
+            <div class="loading">Cargando recomendaciones...</div>
+            <div class="movie-grid"></div>
+        </div>
+        <a class="button-style" href="./votacion.html">Valorar una Película</a>
+    </div>
+    <script src="../src/js/index.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,59 @@
+{
+  "users": [
+    {
+      "nombre": "Ana"
+    },
+    {
+      "nombre": "Carlos"
+    },
+    {
+      "nombre": "Juan"
+    }
+  ],
+  "recommendations": [
+    {
+      "user": "Ana",
+      "peliculas": [
+        {
+          "titulo": "Inception",
+          "descripcion": "Un ladrón que roba secretos...",
+          "categoria": "Ciencia Ficción"
+        },
+        {
+          "titulo": "Interstellar",
+          "descripcion": "Exploración espacial...",
+          "categoria": "Aventura"
+        }
+      ]
+    },
+    {
+      "user": "Carlos",
+      "peliculas": [
+        {
+          "titulo": "The Dark Knight",
+          "descripcion": "El caballero de la noche...",
+          "categoria": "Acción"
+        },
+        {
+          "titulo": "Matrix",
+          "descripcion": "Un hacker descubre la verdad...",
+          "categoria": "Ciencia Ficción"
+        }
+      ]
+    }
+  ],
+  "votaciones": [
+    {
+      "id": "0fb2",
+      "titulo": "Inception",
+      "userName": "Ana",
+      "rating": 3
+    },
+    {
+      "id": "17fd",
+      "titulo": "Interstellar",
+      "userName": "Carlos",
+      "rating": 5
+    }
+  ]
+}

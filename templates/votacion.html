@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votación de Películas</title>
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">¡Valora una Película!</h1>
+        <a class="button-style" href="./index.html">Regresar a Recomendaciones</a>
+        <h2 class="subtitle">Catálogo</h2>
+        <!-- Catálogo de películas -->
+        <div class="movie-grid">
+            <div class="movie-card" data-titulo="Inception" data-imagen="inception.jpg">
+                <img src="../src/img/inception.jpg" alt="Inception">
+                <h3>Inception</h3>
+            </div>
+            <div class="movie-card" data-titulo="Interstellar" data-imagen="interstellar.jpg">
+                <img src="../src/img/interstellar.jpg" alt="Interstellar">
+                <h3>Interstellar</h3>
+            </div>
+            <div class="movie-card" data-titulo="Titanic" data-imagen="Titanic.jpg">
+                <img src="../src/img/Titanic.jpg" alt="Titanic">
+                <h3>Titanic</h3>
+            </div>
+            <div class="movie-card" data-titulo="The Dark Knight" data-imagen="The Dark Knight.jpg">
+                <img src="../src/img/The Dark knight.jpg" alt="The Dark Knight">
+                <h3>The Dark Knight</h3>
+            </div>
+            <div class="movie-card" data-titulo="The Godfather" data-imagen="The Godfather".jpg">
+                <img src="../src/img/The Godfather.jpg" alt="The Godfather">
+                <h3>The Godfather</h3>
+            </div>
+            <div class="movie-card" data-titulo="The Lion King" data-imagen="The Lion King.jpg">
+                <img src="../src/img/The Lion King.jpg" alt="The Lion King">
+                <h3>The Lion King</h3>
+            </div>
+            <div class="movie-card" data-titulo="Pulp Fiction" data-imagen="Pulp Fiction.jpg">
+                <img src="../src/img/Pulp Fiction.jpg" alt="Pulp Fiction">
+                <h3>Pulp Fiction</h3>
+            </div>
+            <div class="movie-card" data-titulo="The Silence of the Lambs" data-imagen="The Silence of the Lambs.jpg">
+                <img src="../src/img/The Silence of the Lambs.jpg" alt="The Silence of the Lambs">
+                <h3>The Silence of the Lambs</h3>
+            </div>
+            <div class="movie-card" data-titulo="Jurassic Park" data-imagen="Jurassic Park.jpg">
+                <img src="../src/img/Jurassic Park.jpg" alt="Jurassic Park">
+                <h3>Jurassic Park</h3>
+            </div>
+        </div>
+    
+        <!-- Formulario de votación -->
+        <div id="votingForm" style="display: none;">
+            <h2>Votar por: <span class="subtitle" id="selectedMovie"></span></h2>
+            <img id="selectedMovieImage" src="" alt="Imagen de la película" style="max-width: 200px; margin-bottom: 20px;">
+            <form id="voteForm">
+                <label for="userName">Nombre del Usuario:</label>
+                <select id="userName" required>
+                    <option value="">-- Selecciona un usuario --</option>
+                </select>
+        
+                <label for="rating">Valoración (1-5):</label>
+                <select id="rating" required>
+                    <option value="">-- Selecciona una valoración --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+        
+                <button type="submit" class="button-style">Votar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="../src/js/votacion.js"></script>
+</body>
+</html>
