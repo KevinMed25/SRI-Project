@@ -36,7 +36,7 @@ def load_ratings():
 
     with open(RATINGS_FILE, mode='r', encoding='utf-8') as file:
         reader = csv.reader(file)
-        header = next(reader)
+        # header = next(reader)
         return [row for row in reader]  # Devolver todas las filas
 
 def add_user_ratings_from_json(user_json):
