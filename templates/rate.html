@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votación de Películas</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Recommender</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
+
 <body>
     <div class="container">
         <h1 class="title">¡Valora una Película!</h1>
@@ -14,39 +17,39 @@
         <!-- Catálogo de películas -->
         <div class="movie-grid">
             <div class="movie-card" data-titulo="Inception" data-imagen="inception.jpg">
-                <img src="/static/img/inception.jpg" alt="Inception">
+                <img src="{{ url_for('static', filename='img/Inception.jpg') }}" alt="Inception">
                 <h3>Inception</h3>
             </div>
             <div class="movie-card" data-titulo="Interstellar" data-imagen="interstellar.jpg">
-                <img src="/static/img/interstellar.jpg" alt="Interstellar">
+                <img src="{{ url_for('static', filename='img/Interstellar.jpg') }}" alt="Interstellar">
                 <h3>Interstellar</h3>
             </div>
             <div class="movie-card" data-titulo="Titanic" data-imagen="Titanic.jpg">
-                <img src="/static/img/Titanic.jpg" alt="Titanic">
+                <img src="{{ url_for('static', filename='img/Titanic.jpg') }}" alt="Titanic">
                 <h3>Titanic</h3>
             </div>
             <div class="movie-card" data-titulo="The Dark Knight" data-imagen="The Dark Knight.jpg">
-                <img src="/static/img/The Dark knight.jpg" alt="The Dark Knight">
+                <img src="{{ url_for('static', filename='img/The Dark Knight.jpg') }}" alt="The Dark Knight">
                 <h3>The Dark Knight</h3>
             </div>
             <div class="movie-card" data-titulo="The Godfather" data-imagen="The Godfather.jpg">
-                <img src="/static/img/The Godfather.jpg" alt="The Godfather">
+                <img src="{{ url_for('static', filename='img/The Godfather.jpg') }}" alt="The Godfather">
                 <h3>The Godfather</h3>
             </div>
             <div class="movie-card" data-titulo="The Lion King" data-imagen="The Lion King.jpg">
-                <img src="/static/img/The Lion King.jpg" alt="The Lion King">
+                <img src="{{ url_for('static', filename='img/The Lion King.jpg') }}" alt="The Lion King">
                 <h3>The Lion King</h3>
             </div>
             <div class="movie-card" data-titulo="Pulp Fiction" data-imagen="Pulp Fiction.jpg">
-                <img src="/static/img/Pulp Fiction.jpg" alt="Pulp Fiction">
+                <img src="{{ url_for('static', filename='img/Pulp Fiction.jpg') }}" alt="Pulp Fiction">
                 <h3>Pulp Fiction</h3>
             </div>
             <div class="movie-card" data-titulo="The Silence of the Lambs" data-imagen="The Silence of the Lambs.jpg">
-                <img src="/static/img/The Silence of the Lambs.jpg" alt="The Silence of the Lambs">
+                <img src="{{ url_for('static', filename='img/The Silence of the Lambs.jpg') }}" alt="The Silence of the Lambs">
                 <h3>The Silence of the Lambs</h3>
             </div>
             <div class="movie-card" data-titulo="Jurassic Park" data-imagen="Jurassic Park.jpg">
-                <img src="/static/img/Jurassic Park.jpg" alt="Jurassic Park">
+                <img src="{{ url_for('static', filename='img/Jurassic Park.jpg') }}" alt="Jurassic Park">
                 <h3>Jurassic Park</h3>
             </div>
         </div>
@@ -76,7 +79,7 @@
         </div>
     </div>
 
-
-    <script src="/static/js/votacion.js"></script>
+    <script src="{{ url_for('static', filename='js/votacion.js') }}"></script>
 </body>
+
 </html>

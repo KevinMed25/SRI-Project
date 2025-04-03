@@ -45,7 +45,6 @@ async function loadRecommendations(username) {
     if (!response.ok) throw new Error("Error en recomendaciones");
 
     const data = await response.json();
-    console.log(data);
 
     if (data.movies && data.movies.length > 0) {
       const movies = data.movies;
