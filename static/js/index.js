@@ -38,24 +38,25 @@ async function loadRecommendations(username) {
     container.innerHTML = "";
 
     const response = await fetch(
-      `http://localhost:5000/recommendations?user=${encodeURIComponent(
+      `http://localhost:5000/api/recommendations?user=${encodeURIComponent(
         username
       )}`
     );
     if (!response.ok) throw new Error("Error en recomendaciones");
 
     const data = await response.json();
+    console.log(data);
 
-    if (data.length > 0 && data[0].peliculas) {
-      const peliculas = data[0].peliculas;
+    if (data.movies && data.movies.length > 0) {
+      const movies = data.movies;
 
-      container.innerHTML = peliculas
+      container.innerHTML = movies
         .map(
           (movie) => `
                 <div class="movie-card">
-                    <h3>${movie.titulo}</h3>
-                    <p>${movie.descripcion}</p>
-                    <p>Categoría: ${movie.categoria}</p>
+                    <h3>${movie.title}</h3>
+                    <p>${movie.description}</p>
+                    <p>Categoría: ${movie.category}</p>
                 </div>
             `
         )

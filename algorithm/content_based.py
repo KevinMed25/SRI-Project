@@ -93,13 +93,7 @@ def format_recommendations(recommended, df_movies, username):
 
     response = {
         "user": username,
-        "recommendations": recommendations_list
+        "movies": recommendations_list
     }
     
     return response
-
-
-#! Example usage
-if __name__ == "__main__":
-    recommended = recommend_movies("Pablo", limit=5)
-    print(recommended)
