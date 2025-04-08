@@ -1,160 +1,95 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from utils.process_file import load_movies, load_ratings, load_users
+from utils.process_file import load_movies, load_ratings
 
-class UserBasedCollaborativeFiltering:
+movies = load_movies()
+ratings = load_ratings()
+
+def recommend_movies_collab(username, limit=None):
     """
-    Sistema de recomendación basado en filtrado colaborativo por usuarios,
-    adaptado para trabajar con archivos CSV.
+    Recomienda películas utilizando filtrado colaborativo basado en similitud entre usuarios.
     """
+    if not movies or len(ratings) < 2:
+        return []
     
-    def __init__(self):
-        """Inicializa el sistema de filtrado colaborativo."""
-        self.usuarios = []
-        self.items = []
-        self.ratings_matrix = None
-        self.similarity_matrix = None
-        self.df_ratings = []
-        self.df_movies = []
+    # Create a DataFrame for movies
+    df_movies = pd.DataFrame(movies)
     
-    def load_from_csv(self):
-        """
-        Carga datos desde archivos CSV.
-        """
-        try:
-            # Cargar usuarios
-            self.usuarios = load_users()
-            # print(self.usuarios)
-            
-            # Cargar calificaciones
-            self.df_ratings = load_ratings()
-            # print(self.df_ratings)
-            
-            # Cargar películas
-            self.df_movies = load_movies()
-            # print(self.df_movies)
-            
-            # Verificar que los datos son válidos
-            if len(self.usuarios) == 0 or self.df_ratings.empty or self.df_movies.empty:
-                print("Error: Uno o más archivos CSV están vacíos.")
-                return False
-            
-            # Extraer nombres de películas de las columnas del dataframe de calificaciones
-            self.items = [col for col in self.df_ratings.columns if col != 'user_name']
-            print(self.items)
-            
-            # Construir matriz de calificaciones
-            self._build_ratings_matrix()
-            
-            # Calcular similitud entre usuarios
-            self.calculate_similarity()
-            
-            return True
-            
-        except Exception as e:
-            print(f"Error al cargar datos desde CSV: {e}")
-            return False
+    header = ratings[0]
+    static_movies = header[1:]
+    df_ratings = pd.DataFrame(ratings[1:], columns=header)
     
-    def _build_ratings_matrix(self):
-        """
-        Construye la matriz de calificaciones a partir del DataFrame de calificaciones.
-        Las filas representan usuarios y las columnas películas.
-        """
-        # Inicializar matriz con ceros
-        self.ratings_matrix = np.zeros((len(self.usuarios), len(self.items)))
-        
-        # Llenar la matriz con calificaciones
-        for i, usuario in enumerate(self.usuarios):
-            # Buscar fila del usuario en el dataframe
-            user_row = self.df_ratings[self.df_ratings['user_name'] == usuario]
-            
-            if not user_row.empty:
-                for j, item in enumerate(self.items):
-                    if item in user_row.columns:
-                        rating = user_row[item].values[0]
-                        # Convertir NaN a 0 (no calificado)
-                        if not pd.isna(rating):
-                            self.ratings_matrix[i, j] = rating
-        
-        return self.ratings_matrix
+    # Verify if the user exists
+    users = df_ratings["user_name"].tolist()
+    if username not in users:
+        return []
     
-    def calculate_similarity(self):
-        """Calcula la matriz de similitud entre usuarios utilizando similitud del coseno."""
-        if self.ratings_matrix is None:
-            print("Error: No hay matriz de calificaciones para calcular similitud.")
-            return None
-            
-        self.similarity_matrix = cosine_similarity(self.ratings_matrix)
-        return self.similarity_matrix
+    # Convert rating columns to numeric
+    for movie in static_movies:
+        df_ratings[movie] = pd.to_numeric(df_ratings[movie], errors="coerce").fillna(0)
     
-    def predict_rating(self, user_idx, item_idx):
-        """
-        Predice la calificación que un usuario daría a un item.
-        """
-        if self.ratings_matrix[user_idx, item_idx] > 0:
-            return self.ratings_matrix[user_idx, item_idx]  # Ya calificado
-            
+    # Create the ratings matrix
+    ratings_matrix = df_ratings[static_movies].to_numpy(dtype=float)
+    
+    # Calculate the similarity between users
+    similarity_matrix = cosine_similarity(ratings_matrix)
+    
+    users_list = df_ratings["user_name"].tolist()
+    target_idx = users_list.index(username)
+    
+    # Detect unrated movies by user
+    user_ratings = ratings_matrix[target_idx]
+    missing_indices = np.where(user_ratings == 0)[0]
+    
+    # Calculate predictions for missing movies
+    predictions = {}
+    for movie_idx in missing_indices:
         numerator = 0.0
         denominator = 0.0
-        
-        for u in range(len(self.usuarios)):
-            if u != user_idx and self.ratings_matrix[u, item_idx] > 0:
-                numerator += self.similarity_matrix[user_idx, u] * self.ratings_matrix[u, item_idx]
-                denominator += abs(self.similarity_matrix[user_idx, u])
-                
-        if denominator == 0:
-            return None
-            
-        return numerator / denominator
+        for other_idx in range(len(users_list)):
+            if other_idx == target_idx:
+                continue
+            other_rating = ratings_matrix[other_idx, movie_idx]
+            if other_rating != 0:
+                sim = similarity_matrix[target_idx, other_idx]
+                numerator += sim * other_rating
+                denominator += abs(sim)
+        if denominator != 0:
+            predictions[static_movies[movie_idx]] = numerator / denominator
+
+    if not predictions:
+        return []
     
-    def get_recommendations(self, username, top_n=5):
-        """
-        Función única para obtener recomendaciones proporcionando solo el nombre de usuario.
-        
-        Parámetros:
-        - username: Nombre del usuario
-        - top_n: Número máximo de recomendaciones (predeterminado: 5)
-        
-        Retorna:
-        - Diccionario con información de los items recomendados
-        """
-        if username not in self.usuarios:
-            return {"error": f"Usuario '{username}' no encontrado"}
-            
-        user_idx = self.usuarios.index(username)
-        missing_items = np.where(self.ratings_matrix[user_idx] == 0)[0]
-        
-        predictions = {}
-        for item_idx in missing_items:
-            pred_rating = self.predict_rating(user_idx, item_idx)
-            if pred_rating is not None:
-                item_name = self.items[item_idx]
-                predictions[item_name] = pred_rating
-                
-        # Ordenar predicciones de mayor a menor
-        recommended_items = sorted(predictions.items(), key=lambda x: x[1], reverse=True)[:top_n]
-        
-        # Formatear resultados con información adicional de las películas
-        results = []
-        for item_name, rating in recommended_items:
-            # Buscar información adicional en el dataframe de películas
-            movie_info = self.df_movies[self.df_movies['name'] == item_name]
-            
-            if not movie_info.empty:
-                results.append({
-                    'name': item_name,
-                    'predicted_rating': round(float(rating), 2),
-                    'description': movie_info['description'].values[0] if 'description' in movie_info.columns else '',
-                    'category': movie_info['category'].values[0] if 'category' in movie_info.columns else ''
-                })
-            else:
-                results.append({
-                    'name': item_name,
-                    'predicted_rating': round(float(rating), 2)
-                })
-                
-        return {
-            'user': username,
-            'recommendations': results
-        }
+    # Sort predictions
+    sorted_recommendations = sorted(predictions.items(), key=lambda x: x[1], reverse=True)
+    
+    # Limit the number of recommendations
+    if limit is not None:
+        sorted_recommendations = sorted_recommendations[:limit]
+    
+    # Format recommendations
+    formatted_recommendation = format_recommendations(sorted_recommendations, df_movies, username)
+    
+    return formatted_recommendation
+
+def format_recommendations(recommended, df_movies, username):
+    recommendations_list = []
+    for movie_name, score in recommended:
+        try:
+            row = df_movies.loc[df_movies["name"] == movie_name].iloc[0]
+        except IndexError:
+            # En el caso poco probable de no encontrar la película, se omite
+            continue
+        recommendations_list.append({
+            "title": row["name"],
+            "description": row["description"],
+            "category": row["category"]
+        })
+    
+    response = {
+        "user": username,
+        "movies": recommendations_list
+    }
+    
+    return response
