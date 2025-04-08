@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', loadUsers)
+document.addEventListener("DOMContentLoaded", loadUsers);
 
 // Event Listeners
 document.getElementById("userSelect").addEventListener("change", (e) => {
@@ -11,7 +11,6 @@ async function loadUsers() {
     const response = await fetch("http://127.0.0.1:5000/api/users");
     if (!response.ok) throw new Error("Error cargando usuarios");
 
-
     const data = await response.json();
     const users = data.users;
 
@@ -19,13 +18,11 @@ async function loadUsers() {
 
     // Generar opciones para el select
 
-    users.forEach(user => {
-      
-      const option = document.createElement('option'); 
-      option.value = user.name; 
-      option.text = user.name; 
-      select.appendChild(option)
-
+    users.forEach((user) => {
+      const option = document.createElement("option");
+      option.value = user.name;
+      option.text = user.name;
+      select.appendChild(option);
     });
   } catch (error) {
     console.error("Error:", error);
@@ -43,7 +40,7 @@ async function loadRecommendations(username) {
     container.innerHTML = "";
 
     const response = await fetch(
-      `http://127.0.0.1:5000/api/recommendations?user=${encodeURIComponent(
+      `http://127.0.0.1:5000/api/collaborative-filtering?user=${encodeURIComponent(
         username
       )}`
     );

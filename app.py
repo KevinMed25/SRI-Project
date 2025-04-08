@@ -43,7 +43,7 @@ def get_recommendations():
 
 @app.route('/api/collaborative-filtering', methods=['GET'])
 def get_collaborative_filtering(): 
-    username = request.args.get('username')
+    username = request.args.get('user ')
     
     if not username:
         return jsonify({"error": "El nombre de usuario es requerido"}), 400
