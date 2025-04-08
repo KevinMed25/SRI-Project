@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Cargar usuarios al iniciar
 async function loadUsers() {
   try {
-    const response = await fetch("http://localhost:5000/api/users");
+    const response = await fetch("http://127.0.0.1:5000/api/users");
     if (!response.ok) throw new Error("Error cargando usuarios");
 
     const data = await response.json(); // Obtener el objeto completo
@@ -46,7 +46,7 @@ document.getElementById("voteForm").addEventListener("submit", async (e) => {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/save-ratings", {
+    const response = await fetch("http://127.0.0.1:5000/api/save-ratings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

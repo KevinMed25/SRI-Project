@@ -4,7 +4,7 @@ from flask import Flask, request, render_template, jsonify, make_response
 from flask_cors import CORS
 from utils.process_file import ensure_files_exist, load_users, update_user_rating
 from algorithm.content_based import recommend_movies
-
+from algorithm.collaborative_filtering import UserBasedCollaborativeFiltering
 app = Flask(__name__)
 CORS(app, origins=["http://127.0.0.1:5000"]) 
 
@@ -39,6 +39,16 @@ def get_recommendations():
     recomendations = recommend_movies(username, min_fav_rating=4, limit=6)
     
     return jsonify(recomendations)
+
+@app.route('/api/collaborative-filtering', methods=['GET'])
+def get_collaborative_filtering(): 
+    username = request.args.get('username')
+    top_n = request.args.get('top_n', default=5, type=int)
+    recommender = UserBasedCollaborativeFiltering()
+    recommender.load_from_csv()
+    recommendations = recommender.get_recommendations(username, top_n)
+
+    return jsonify(recommendations)
 
 
 if __name__ == "__main__":

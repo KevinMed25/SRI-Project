@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  loadUsers();
-});
+document.addEventListener('DOMContentLoaded', loadUsers)
 
 // Event Listeners
 document.getElementById("userSelect").addEventListener("change", (e) => {
@@ -10,8 +8,9 @@ document.getElementById("userSelect").addEventListener("change", (e) => {
 // Cargar usuarios al iniciar
 async function loadUsers() {
   try {
-    const response = await fetch("http://localhost:5000/api/users");
+    const response = await fetch("http://127.0.0.1:5000/api/users");
     if (!response.ok) throw new Error("Error cargando usuarios");
+
 
     const data = await response.json();
     const users = data.users;
@@ -19,9 +18,15 @@ async function loadUsers() {
     const select = document.getElementById("userSelect");
 
     // Generar opciones para el select
-    select.innerHTML = users
-      .map((user) => `<option value="${user.name}">${user.name}</option>`)
-      .join("");
+
+    users.forEach(user => {
+      
+      const option = document.createElement('option'); 
+      option.value = user.name; 
+      option.text = user.name; 
+      select.appendChild(option)
+
+    });
   } catch (error) {
     console.error("Error:", error);
     alert("Error al cargar usuarios");
@@ -38,7 +43,7 @@ async function loadRecommendations(username) {
     container.innerHTML = "";
 
     const response = await fetch(
-      `http://localhost:5000/api/recommendations?user=${encodeURIComponent(
+      `http://127.0.0.1:5000/api/recommendations?user=${encodeURIComponent(
         username
       )}`
     );
