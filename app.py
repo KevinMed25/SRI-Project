@@ -4,9 +4,10 @@ from flask import Flask, request, render_template, jsonify, make_response
 from flask_cors import CORS
 from utils.process_file import ensure_files_exist, load_users, update_user_rating
 from algorithm.content_based import recommend_movies
-from algorithm.collaborative_filtering import UserBasedCollaborativeFiltering
+from algorithm.collaborative_filtering import recommend_movies_collab
+
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:5000"]) 
+CORS(app) 
 
 @app.route("/")
 def index():
@@ -43,12 +44,13 @@ def get_recommendations():
 @app.route('/api/collaborative-filtering', methods=['GET'])
 def get_collaborative_filtering(): 
     username = request.args.get('username')
-    top_n = request.args.get('top_n', default=5, type=int)
-    recommender = UserBasedCollaborativeFiltering()
-    recommender.load_from_csv()
-    recommendations = recommender.get_recommendations(username, top_n)
+    
+    if not username:
+        return jsonify({"error": "El nombre de usuario es requerido"}), 400
+    
+    recomendations = recommend_movies_collab(username)
 
-    return jsonify(recommendations)
+    return jsonify(recomendations)
 
 
 if __name__ == "__main__":
